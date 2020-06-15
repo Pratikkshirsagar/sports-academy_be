@@ -7,12 +7,12 @@ const colors = require('colors');
 dotenv.config({ path: './config/config.env' });
 
 // Route files
-const slotGame = require('./routes/slotgameRoutes');
+const sportsclubs = require('./routes/sportsclubsRoutes');
 
 const app = express();
 
 // Mount the router
-app.use('/api/v1/slotgame', slotGame);
+app.use('/api/v1/sportsclubs', sportsclubs);
 
 const PORT = process.env.PORT || 5000;
 
