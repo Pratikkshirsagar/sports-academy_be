@@ -5,35 +5,14 @@ const colors = require('colors');
 
 // Lode env vars
 dotenv.config({ path: './config/config.env' });
+
+// Route files
+const slotGame = require('./routes/slotgameRoutes');
+
 const app = express();
 
-app.get('/api/v1/slotgame', (req, res, next) => {
-  res.status(200).json({
-    status: 'success',
-    msg: 'showing all the gameslot',
-  });
-});
-
-app.get('/api/v1/slotgame/:id', (req, res, next) => {
-  res.status(200).json({
-    status: 'success',
-    msg: 'showing one gameslot',
-  });
-});
-
-app.post('/api/v1/slotgame', (req, res, next) => {
-  res.status(200).json({
-    status: 'success',
-    msg: 'added a gameslot',
-  });
-});
-
-app.delete('/api/v1/slotgame/:id', (req, res, next) => {
-  res.status(200).json({
-    status: 'success',
-    msg: 'deleted one gameslot',
-  });
-});
+// Mount the router
+app.use('/api/v1/slotgame', slotGame);
 
 const PORT = process.env.PORT || 5000;
 
