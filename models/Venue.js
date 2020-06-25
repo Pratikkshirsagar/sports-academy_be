@@ -16,7 +16,12 @@ const VenuSchemaI = new mongoose.Schema({
     type: String,
     required: true,
   },
-  maxPersonPerGroup: {
+  typeOfSlotBooking: {
+    type: String,
+    enum: ['whole', 'individual'],
+    required: true,
+  },
+  maxPersonPerSlot: {
     type: Number,
     required: [true, 'Must have a group size'],
   },
@@ -84,7 +89,6 @@ const VenuSchemaI = new mongoose.Schema({
   },
 });
 
-const VenuI = mongoose.model('VenuI', VenuSchemaI);
-module.exports = {
-  VenuI,
-};
+const Venu = mongoose.model('Venu', VenuSchemaI);
+
+module.exports = Venu;

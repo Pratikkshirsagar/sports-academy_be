@@ -1,12 +1,13 @@
-const { VenuI } = require('../models/Venue');
+const Venu = require('../models/Venue');
 
 exports.getAllVenue = async (req, res, next) => {
   try {
-    const venues = await VenuI.find();
+    console.log('Here from get venue');
+    const venues = await Venu.find();
 
     res.status(200).json({
       success: true,
-      count: venue.length,
+      count: venues.length,
       data: venues,
     });
   } catch (error) {
@@ -14,12 +15,13 @@ exports.getAllVenue = async (req, res, next) => {
       success: false,
       error,
     });
+    console.log(error);
   }
 };
 
 exports.getSingleVenue = async (req, res, next) => {
   try {
-    const venue = await VenuI.findById(req.params.id);
+    const venue = await Venu.findById(req.params.id);
 
     if (!venue) {
       return res.status(400).json({
@@ -41,7 +43,7 @@ exports.getSingleVenue = async (req, res, next) => {
 
 exports.createVenue = async (req, res, mext) => {
   try {
-    const venue = await VenuI.create(req.body);
+    const venue = await Venu.create(req.body);
 
     res.status(201).json({
       success: true,
@@ -54,7 +56,7 @@ exports.createVenue = async (req, res, mext) => {
 
 exports.updateVenue = async (req, res, next) => {
   try {
-    const venue = await VenuI.findByIdAndUpdate(req.params.id, req.body, {
+    const venue = await Venu.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -80,7 +82,7 @@ exports.updateVenue = async (req, res, next) => {
 
 exports.deleteVenue = async (req, res, next) => {
   try {
-    const venue = await VenuI.findByIdAndDelete(req.params.id);
+    const venue = await Venu.findByIdAndDelete(req.params.id);
 
     if (!venue) {
       return res.status(400).json({
