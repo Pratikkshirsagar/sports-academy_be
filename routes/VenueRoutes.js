@@ -5,7 +5,7 @@ const {
   createVenue,
   updateVenue,
   deleteVenue,
-} = require('../controllers/Venue1Controller');
+} = require('../controllers/VenueController');
 
 const router = express.Router();
 

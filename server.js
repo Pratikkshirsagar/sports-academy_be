@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
+const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 // Lode env vars
 dotenv.config({ path: './config/config.env' });
@@ -11,7 +12,7 @@ connectDB();
 
 // Route files
 const sportsclub = require('./routes/sportsclubRoutes');
-const venue = require('./routes/Venue1Routes');
+const venue = require('./routes/VenueRoutes');
 
 const app = express();
 
@@ -25,6 +26,8 @@ if (process.env.NODE_ENV === 'development') {
 
 // Mount the router
 app.use('/api/v1/venue', venue);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

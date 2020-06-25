@@ -2,7 +2,6 @@ const Venu = require('../models/Venue');
 
 exports.getAllVenue = async (req, res, next) => {
   try {
-    console.log('Here from get venue');
     const venues = await Venu.find();
 
     res.status(200).json({
@@ -11,11 +10,11 @@ exports.getAllVenue = async (req, res, next) => {
       data: venues,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error,
-    });
-    console.log(error);
+    // res.status(400).json({
+    //   success: false,
+    //   error,
+    // });
+    next(error);
   }
 };
 
@@ -34,10 +33,7 @@ exports.getSingleVenue = async (req, res, next) => {
       data: venue,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error,
-    });
+    next(error);
   }
 };
 
