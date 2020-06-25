@@ -1,89 +1,70 @@
 const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
 const Venu = require('../models/Venue');
 
-exports.getAllVenue = async (req, res, next) => {
-  try {
-    const venues = await Venu.find();
+exports.getAllVenue = asyncHandler(async (req, res, next) => {
+  const venues = await Venu.find();
 
-    res.status(200).json({
-      success: true,
-      count: venues.length,
-      data: venues,
-    });
-  } catch (error) {
-    next(error);
+  res.status(200).json({
+    success: true,
+    count: venues.length,
+    data: venues,
+  });
+});
+
+exports.getSingleVenue = asyncHandler(async (req, res, next) => {
+  const venue = await Venu.findById(req.params.id);
+
+  if (!venue) {
+    return next(
+      new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
+    );
   }
-};
 
-exports.getSingleVenue = async (req, res, next) => {
-  try {
-    const venue = await Venu.findById(req.params.id);
+  res.status(200).json({
+    success: true,
+    data: venue,
+  });
+});
 
-    if (!venue) {
-      return next(
-        new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
-      );
-    }
+exports.createVenue = asyncHandler(async (req, res, next) => {
+  const venue = await Venu.create(req.body);
 
-    res.status(200).json({
-      success: true,
-      data: venue,
-    });
-  } catch (error) {
-    next(error);
+  res.status(201).json({
+    success: true,
+    data: venue,
+  });
+});
+
+exports.updateVenue = asyncHandler(async (req, res, next) => {
+  const venue = await Venu.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!venue) {
+    return next(
+      new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
+    );
   }
-};
 
-exports.createVenue = async (req, res, next) => {
-  try {
-    const venue = await Venu.create(req.body);
+  res.status(201).json({
+    success: true,
+    data: venue,
+  });
+});
 
-    res.status(201).json({
-      success: true,
-      data: venue,
-    });
-  } catch (error) {
-    next(error);
+exports.deleteVenue = asyncHandler(async (req, res, next) => {
+  const venue = await Venu.findByIdAndDelete(req.params.id);
+
+  if (!venue) {
+    return next(
+      new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
+    );
   }
-};
 
-exports.updateVenue = async (req, res, next) => {
-  try {
-    const venue = await Venu.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!venue) {
-      return next(
-        new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
-      );
-    }
-
-    res.status(201).json({
-      success: true,
-      data: venue,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.deleteVenue = async (req, res, next) => {
-  try {
-    const venue = await Venu.findByIdAndDelete(req.params.id);
-
-    if (!venue) {
-      return next(
-        new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
-      );
-    }
-
-    res.status(200).json({
-      success: true,
-      data: {},
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
