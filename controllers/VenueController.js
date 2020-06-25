@@ -1,3 +1,4 @@
+const ErrorResponse = require('../utils/errorResponse');
 const Venu = require('../models/Venue');
 
 exports.getAllVenue = async (req, res, next) => {
@@ -10,10 +11,6 @@ exports.getAllVenue = async (req, res, next) => {
       data: venues,
     });
   } catch (error) {
-    // res.status(400).json({
-    //   success: false,
-    //   error,
-    // });
     next(error);
   }
 };
@@ -23,9 +20,9 @@ exports.getSingleVenue = async (req, res, next) => {
     const venue = await Venu.findById(req.params.id);
 
     if (!venue) {
-      return res.status(400).json({
-        success: false,
-      });
+      return next(
+        new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
+      );
     }
 
     res.status(200).json({
@@ -37,7 +34,7 @@ exports.getSingleVenue = async (req, res, next) => {
   }
 };
 
-exports.createVenue = async (req, res, mext) => {
+exports.createVenue = async (req, res, next) => {
   try {
     const venue = await Venu.create(req.body);
 
@@ -45,8 +42,8 @@ exports.createVenue = async (req, res, mext) => {
       success: true,
       data: venue,
     });
-  } catch (err) {
-    res.status(400).json({ success: false, err: err });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -58,9 +55,9 @@ exports.updateVenue = async (req, res, next) => {
     });
 
     if (!venue) {
-      return res.status(400).json({
-        success: false,
-      });
+      return next(
+        new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
+      );
     }
 
     res.status(201).json({
@@ -68,11 +65,7 @@ exports.updateVenue = async (req, res, next) => {
       data: venue,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error,
-    });
-    console.log(error);
+    next(error);
   }
 };
 
@@ -81,9 +74,9 @@ exports.deleteVenue = async (req, res, next) => {
     const venue = await Venu.findByIdAndDelete(req.params.id);
 
     if (!venue) {
-      return res.status(400).json({
-        success: false,
-      });
+      return next(
+        new ErrorResponse(`Venue not found with id of ${req.params.id}`, 404)
+      );
     }
 
     res.status(200).json({
@@ -91,9 +84,6 @@ exports.deleteVenue = async (req, res, next) => {
       data: {},
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error,
-    });
+    next(error);
   }
 };
