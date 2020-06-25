@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const VenuSchemaI = new mongoose.Schema({
   name: {
@@ -87,6 +88,12 @@ const VenuSchemaI = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+});
+
+// Create bootcamp slug from the name
+VenuSchemaI.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
 });
 
 const Venu = mongoose.model('Venu', VenuSchemaI);
